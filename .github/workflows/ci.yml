@@ -1,0 +1,37 @@
+name: CI
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  build-and-test:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Restore solution
+        shell: pwsh
+        run: dotnet restore .\src\ExportIFCFromRevit-CSharp.sln
+
+      - name: Restore orchestrator RID
+        shell: pwsh
+        run: dotnet restore .\src\ExportIfc.Orchestrator\ExportIfc.Orchestrator.csproj -r win-x64
+
+      - name: Build solution
+        shell: pwsh
+        run: dotnet build .\src\ExportIFCFromRevit-CSharp.sln -c Release -p:Platform=x64 --no-restore
+
+      - name: Test solution
+        shell: pwsh
+        run: dotnet test .\src\ExportIFCFromRevit-CSharp.sln -c Release -p:Platform=x64 --no-build --logger "trx;LogFileName=test-results.trx"

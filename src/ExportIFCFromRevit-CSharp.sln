@@ -1,0 +1,59 @@
+﻿Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 18
+VisualStudioVersion = 18.3.11520.95
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExportIfc.Common", "ExportIfc.Common\ExportIfc.Common.csproj", "{86343E49-0EF5-4C9A-BE89-75C780EDECB6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExportIfc.Orchestrator", "ExportIfc.Orchestrator\ExportIfc.Orchestrator.csproj", "{35769BEF-6350-4025-BD9D-E7AF91A49769}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExportIfc.RevitAddin.Net48", "ExportIfc.RevitAddin.Net48\ExportIfc.RevitAddin.Net48.csproj", "{AADDD95C-6984-4D54-B01A-12FFCBD344CA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExportIfc.Tests", "ExportIfc.Tests\ExportIfc.Tests.csproj", "{4BFE87CD-9BD0-4560-AA91-CE90DD4BBD2F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExportIfc.RevitAddin.Net8", "ExportIfc.RevitAddin.Net8\ExportIfc.RevitAddin.Net8.csproj", "{6ECB35F7-06F3-4710-B5A5-D47905B8F00D}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "ExportIfc.RevitAddin.Shared", "ExportIfc.RevitAddin.Shared\ExportIfc.RevitAddin.Shared.shproj", "{5271F0AB-C8DF-4CB8-BCEF-BB14D74AED5A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{86343E49-0EF5-4C9A-BE89-75C780EDECB6}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{86343E49-0EF5-4C9A-BE89-75C780EDECB6}.Debug|x64.Build.0 = Debug|Any CPU
+		{86343E49-0EF5-4C9A-BE89-75C780EDECB6}.Release|x64.ActiveCfg = Release|Any CPU
+		{86343E49-0EF5-4C9A-BE89-75C780EDECB6}.Release|x64.Build.0 = Release|Any CPU
+
+		{35769BEF-6350-4025-BD9D-E7AF91A49769}.Debug|x64.ActiveCfg = Debug|x64
+		{35769BEF-6350-4025-BD9D-E7AF91A49769}.Debug|x64.Build.0 = Debug|x64
+		{35769BEF-6350-4025-BD9D-E7AF91A49769}.Release|x64.ActiveCfg = Release|x64
+		{35769BEF-6350-4025-BD9D-E7AF91A49769}.Release|x64.Build.0 = Release|x64
+
+		{AADDD95C-6984-4D54-B01A-12FFCBD344CA}.Debug|x64.ActiveCfg = Debug|x64
+		{AADDD95C-6984-4D54-B01A-12FFCBD344CA}.Debug|x64.Build.0 = Debug|x64
+		{AADDD95C-6984-4D54-B01A-12FFCBD344CA}.Release|x64.ActiveCfg = Release|x64
+		{AADDD95C-6984-4D54-B01A-12FFCBD344CA}.Release|x64.Build.0 = Release|x64
+
+		{4BFE87CD-9BD0-4560-AA91-CE90DD4BBD2F}.Debug|x64.ActiveCfg = Debug|x64
+		{4BFE87CD-9BD0-4560-AA91-CE90DD4BBD2F}.Debug|x64.Build.0 = Debug|x64
+		{4BFE87CD-9BD0-4560-AA91-CE90DD4BBD2F}.Release|x64.ActiveCfg = Release|x64
+		{4BFE87CD-9BD0-4560-AA91-CE90DD4BBD2F}.Release|x64.Build.0 = Release|x64
+
+		{6ECB35F7-06F3-4710-B5A5-D47905B8F00D}.Debug|x64.ActiveCfg = Debug|x64
+		{6ECB35F7-06F3-4710-B5A5-D47905B8F00D}.Debug|x64.Build.0 = Debug|x64
+		{6ECB35F7-06F3-4710-B5A5-D47905B8F00D}.Release|x64.ActiveCfg = Release|x64
+		{6ECB35F7-06F3-4710-B5A5-D47905B8F00D}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4FA1D2F2-E020-45A9-9755-39F362BFFC35}
+	EndGlobalSection
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		ExportIfc.RevitAddin.Shared\ExportIfc.RevitAddin.Shared.projitems*{5271f0ab-c8df-4cb8-bcef-bb14d74aed5a}*SharedItemsImports = 13
+		ExportIfc.RevitAddin.Shared\ExportIfc.RevitAddin.Shared.projitems*{6ecb35f7-06f3-4710-b5a5-d47905b8f00d}*SharedItemsImports = 5
+		ExportIfc.RevitAddin.Shared\ExportIfc.RevitAddin.Shared.projitems*{aaddd95c-6984-4d54-b01a-12ffcbd344ca}*SharedItemsImports = 5
+	EndGlobalSection
+EndGlobal

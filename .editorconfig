@@ -1,0 +1,14 @@
+root = true
+
+[*]
+end_of_line = crlf
+insert_final_newline = true
+
+[*.{cs,csproj,sln,props,targets,xml,config}]
+charset = utf-8-bom
+
+[*.{json,md,yml,yaml}]
+charset = utf-8
+
+[*.ps1]
+charset = utf-8-bom

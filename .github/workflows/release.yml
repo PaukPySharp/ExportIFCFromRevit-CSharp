@@ -1,0 +1,212 @@
+name: Release Packages
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+env:
+  ORCHESTRATOR_PACKAGE_NAME: ExportIFCFromRevit-CSharp-Orchestrator-win-x64
+  ADDIN_PACKAGE_NAME_2022_2024: ExportIFCFromRevit-CSharp-Addin-Revit-2022-2024
+  ADDIN_PACKAGE_NAME_2025_2026: ExportIFCFromRevit-CSharp-Addin-Revit-2025-2026
+  ADDIN_PAYLOAD_DIR_NAME: ExportIFCFromRevit-CSharp
+
+jobs:
+  build-release:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Restore solution
+        shell: pwsh
+        run: dotnet restore .\src\ExportIFCFromRevit-CSharp.sln
+
+      - name: Build add-in for Revit 2022-2024
+        shell: pwsh
+        run: >
+          dotnet build .\src\ExportIfc.RevitAddin.Net48\ExportIfc.RevitAddin.Net48.csproj
+          -c Release
+          -p:Platform=x64
+          --no-restore
+
+      - name: Build add-in for Revit 2025-2026
+        shell: pwsh
+        run: >
+          dotnet build .\src\ExportIfc.RevitAddin.Net8\ExportIfc.RevitAddin.Net8.csproj
+          -c Release
+          -p:Platform=x64
+          --no-restore
+
+      - name: Restore orchestrator publish RID
+        shell: pwsh
+        run: >
+          dotnet restore .\src\ExportIfc.Orchestrator\ExportIfc.Orchestrator.csproj
+          -r win-x64
+
+      - name: Publish orchestrator
+        shell: pwsh
+        run: >
+          dotnet publish .\src\ExportIfc.Orchestrator\ExportIfc.Orchestrator.csproj
+          -c Release
+          -r win-x64
+          -p:Platform=x64
+          --self-contained true
+          --no-restore
+          -o .\artifacts\publish\orchestrator
+
+      - name: Assemble release packages
+        shell: pwsh
+        run: |
+          Set-StrictMode -Version Latest
+          $ErrorActionPreference = "Stop"
+
+          $repoRoot = $env:GITHUB_WORKSPACE
+          $artifactsRoot = Join-Path $repoRoot 'artifacts'
+          $packageRoot = Join-Path $artifactsRoot 'packages'
+          $zipRoot = Join-Path $artifactsRoot 'zips'
+
+          function Reset-Directory {
+              param([string]$Path)
+
+              if (Test-Path -LiteralPath $Path) {
+                  Remove-Item -LiteralPath $Path -Recurse -Force
+              }
+
+              New-Item -ItemType Directory -Path $Path -Force | Out-Null
+          }
+
+          function Copy-BuildOutput {
+              param(
+                  [string]$SourceDir,
+                  [string]$DestinationDir
+              )
+
+              if (-not (Test-Path -LiteralPath $SourceDir)) {
+                  throw "Build output directory not found: '$SourceDir'."
+              }
+
+              New-Item -ItemType Directory -Path $DestinationDir -Force | Out-Null
+
+              Get-ChildItem -LiteralPath $SourceDir -File | Where-Object {
+                  $_.Extension -notin @('.pdb', '.xml')
+              } | ForEach-Object {
+                  Copy-Item -LiteralPath $_.FullName -Destination $DestinationDir -Force
+              }
+          }
+
+          Reset-Directory -Path $packageRoot
+          Reset-Directory -Path $zipRoot
+
+          $orchestratorPackage = Join-Path $packageRoot $env:ORCHESTRATOR_PACKAGE_NAME
+          Reset-Directory -Path $orchestratorPackage
+
+          Copy-Item -Path (Join-Path $repoRoot '_release_templates\orchestrator\*') `
+              -Destination $orchestratorPackage `
+              -Recurse `
+              -Force
+
+          Copy-Item -LiteralPath (Join-Path $repoRoot 'LICENSE') `
+              -Destination (Join-Path $orchestratorPackage 'LICENSE') `
+              -Force
+
+          $orchestratorExe = Join-Path $repoRoot 'artifacts\publish\orchestrator\ExportIfc.Orchestrator.exe'
+          if (-not (Test-Path -LiteralPath $orchestratorExe)) {
+              throw "Published orchestrator executable not found: '$orchestratorExe'."
+          }
+
+          Copy-Item -LiteralPath $orchestratorExe -Destination $orchestratorPackage -Force
+
+          New-Item -ItemType Directory -Path (Join-Path $orchestratorPackage '_docs') -Force | Out-Null
+          New-Item -ItemType Directory -Path (Join-Path $orchestratorPackage 'admin_data\history') -Force | Out-Null
+          New-Item -ItemType Directory -Path (Join-Path $orchestratorPackage 'admin_data\_logs\_tech\_console') -Force | Out-Null
+
+          Copy-Item -LiteralPath (Join-Path $repoRoot '_settings\settings.ini') `
+              -Destination (Join-Path $orchestratorPackage '_settings\settings.ini') `
+              -Force
+
+          Copy-Item -LiteralPath (Join-Path $repoRoot '_docs\ExportIFC_manual_ru.docx') `
+              -Destination (Join-Path $orchestratorPackage '_docs\ExportIFC_manual_ru.docx') `
+              -Force
+
+          Copy-Item -LiteralPath (Join-Path $repoRoot '_examples\IFC_Export_Config_structure_notes_ru.docx') `
+              -Destination (Join-Path $orchestratorPackage '_examples\IFC_Export_Config_structure_notes_ru.docx') `
+              -Force
+
+          Copy-Item -LiteralPath (Join-Path $repoRoot '_examples\IFC_Export_Config_example') `
+              -Destination (Join-Path $orchestratorPackage '_examples') `
+              -Recurse `
+              -Force
+
+          Copy-Item -LiteralPath (Join-Path $repoRoot 'admin_data\manage.xlsx') `
+              -Destination (Join-Path $orchestratorPackage 'admin_data\manage.xlsx') `
+              -Force
+
+          Copy-Item -LiteralPath (Join-Path $repoRoot 'admin_data\history\history.xlsx') `
+              -Destination (Join-Path $orchestratorPackage 'admin_data\history\history.xlsx') `
+              -Force
+
+          Copy-Item -LiteralPath (Join-Path $repoRoot 'admin_data\history\_(ВАЖНО!) history.xlsx НЕ ДЕРЖАТЬ ОТКРЫТЫМ ПРИ ЭКСПОРТЕ.txt') `
+              -Destination (Join-Path $orchestratorPackage 'admin_data\history\_(ВАЖНО!) history.xlsx НЕ ДЕРЖАТЬ ОТКРЫТЫМ ПРИ ЭКСПОРТЕ.txt') `
+              -Force
+
+          $addin48Package = Join-Path $packageRoot $env:ADDIN_PACKAGE_NAME_2022_2024
+          Reset-Directory -Path $addin48Package
+          Copy-Item -Path (Join-Path $repoRoot '_release_templates\addin\revit-2022-2024\*') `
+              -Destination $addin48Package `
+              -Recurse `
+              -Force
+          Copy-Item -LiteralPath (Join-Path $repoRoot 'LICENSE') `
+              -Destination (Join-Path $addin48Package 'LICENSE') `
+              -Force
+          Copy-BuildOutput `
+              -SourceDir (Join-Path $repoRoot 'src\ExportIfc.RevitAddin.Net48\bin\x64\Release') `
+              -DestinationDir (Join-Path $addin48Package $env:ADDIN_PAYLOAD_DIR_NAME)
+
+          $addinNet8Package = Join-Path $packageRoot $env:ADDIN_PACKAGE_NAME_2025_2026
+          Reset-Directory -Path $addinNet8Package
+          Copy-Item -Path (Join-Path $repoRoot '_release_templates\addin\revit-2025-2026\*') `
+              -Destination $addinNet8Package `
+              -Recurse `
+              -Force
+          Copy-Item -LiteralPath (Join-Path $repoRoot 'LICENSE') `
+              -Destination (Join-Path $addinNet8Package 'LICENSE') `
+              -Force
+          Copy-BuildOutput `
+              -SourceDir (Join-Path $repoRoot 'src\ExportIfc.RevitAddin.Net8\bin\x64\Release') `
+              -DestinationDir (Join-Path $addinNet8Package $env:ADDIN_PAYLOAD_DIR_NAME)
+
+          Get-ChildItem -LiteralPath $packageRoot -Directory | ForEach-Object {
+              $zipPath = Join-Path $zipRoot ($_.Name + '.zip')
+
+              if (Test-Path -LiteralPath $zipPath) {
+                  Remove-Item -LiteralPath $zipPath -Force
+              }
+
+              Compress-Archive -Path $_.FullName -DestinationPath $zipPath -CompressionLevel Optimal
+          }
+
+      - name: Upload release archives
+        uses: actions/upload-artifact@v6
+        with:
+          name: release-packages
+          path: artifacts/zips/*.zip
+          if-no-files-found: error
+
+      - name: Publish GitHub Release
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: artifacts/zips/*.zip
+          generate_release_notes: true
+          fail_on_unmatched_files: true

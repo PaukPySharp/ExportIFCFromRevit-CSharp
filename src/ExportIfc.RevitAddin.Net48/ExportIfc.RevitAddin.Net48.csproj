@@ -1,0 +1,37 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFramework>net48</TargetFramework>
+		<AssemblyName>ExportIfc.RevitAddin.Net48</AssemblyName>
+		<RootNamespace>ExportIfc</RootNamespace>
+		<Platforms>x64</Platforms>
+		<PlatformTarget>x64</PlatformTarget>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+		<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\ExportIfc.Common\ExportIfc.Common.csproj" />
+	</ItemGroup>
+
+	<!-- Revit references:
+       Set these HintPath values to your Revit installation, e.g.
+       C:\Program Files\Autodesk\Revit 2022\RevitAPI.dll -->
+	<ItemGroup>
+		<Reference Include="Autodesk.IFC.Export.UI">
+			<HintPath>..\..\tools\RevitAPI\2022\Autodesk.IFC.Export.UI.dll</HintPath>
+			<Private>False</Private>
+		</Reference>
+		<Reference Include="RevitAPI">
+			<HintPath>..\..\tools\RevitAPI\2022\RevitAPI.dll</HintPath>
+			<Private>false</Private>
+		</Reference>
+		<Reference Include="RevitAPIUI">
+			<HintPath>..\..\tools\RevitAPI\2022\RevitAPIUI.dll</HintPath>
+			<Private>false</Private>
+		</Reference>
+		<Reference Include="System.Web.Extensions" />
+	</ItemGroup>
+	<Import Project="..\ExportIfc.RevitAddin.Shared\ExportIfc.RevitAddin.Shared.projitems" Label="Shared" />
+
+</Project>

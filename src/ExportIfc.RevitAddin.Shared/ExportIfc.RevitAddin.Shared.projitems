@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects Condition="'$(MSBuildVersion)' == '' Or '$(MSBuildVersion)' &lt; '16.0'">$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>5271f0ab-c8df-4cb8-bcef-bb14d74aed5a</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>ExportIfc.RevitAddin.Shared</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)App.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Batch\Context\BatchRunContext.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Batch\Context\BatchRunContextReader.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Batch\Context\BatchRunEnvironmentSnapshot.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Batch\Export\BatchExecutor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Batch\Export\BatchRunResult.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Batch\Export\Contracts\IModelExportExecutor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Batch\Export\Diagnostics\ExportViewDiagnosticsWriter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Batch\Export\Execution\ExportAttemptResult.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Batch\Export\Execution\ModelExportAttemptExecutor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Batch\Export\Execution\ModelExportExecutionContext.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Batch\Export\ModelExportExecutor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Batch\Export\Routes\ExportRouteRequest.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Batch\Input\BatchRunInput.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Batch\Input\BatchRunInputLoader.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Batch\Runtime\RunnerEngine.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Composition\RunnerCompositionRoot.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Composition\RunnerDependencies.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Config\Export\AddinExportThresholds.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Config\Ifc\IfcConfigDefaults.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Config\Ifc\IfcConfigJsonKeys.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Logging\AddinLogs.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Revit\Contracts\IIfcExportOptionsFactory.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Revit\RevitDocuments.Closing.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Revit\RevitDocuments.Contracts.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Revit\RevitDocuments.Logging.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Revit\RevitDocuments.Opening.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Revit\RevitDocuments.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Revit\RevitViews.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Startup\Dialogs\RevitUiDialogCatalog.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Startup\Dialogs\RevitUiNoiseGuard.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Startup\BatchLaunchDetector.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Startup\DebugAttachGate.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Startup\Runner.cs" />
+  </ItemGroup>
+</Project>

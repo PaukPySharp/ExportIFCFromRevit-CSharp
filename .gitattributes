@@ -1,0 +1,38 @@
+* text=auto
+
+*.cs text eol=crlf
+*.csproj text eol=crlf
+*.sln text eol=crlf
+*.props text eol=crlf
+*.targets text eol=crlf
+*.xml text eol=crlf
+*.config text eol=crlf
+*.json text eol=crlf
+*.md text eol=crlf
+*.yml text eol=crlf
+*.yaml text eol=crlf
+*.ini text eol=crlf
+*.txt text eol=crlf
+*.ps1 text eol=crlf
+*.cmd text eol=crlf
+*.bat text eol=crlf
+*.xaml text eol=crlf
+
+.editorconfig text eol=crlf
+.gitattributes text eol=crlf
+.gitignore text eol=crlf
+
+_examples/IFC_Export_Config_example/01_Export_Layers/Layer_Mapping.txt -text
+
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.pdf binary
+*.docx binary
+*.xlsx binary
+*.xlsm binary
+*.dll binary
+*.exe binary
+*.zip binary
